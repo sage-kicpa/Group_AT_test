@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>국가공인 AT자격시험 - 직업계고 특별 지원 안내</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Pretendard', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', "Segoe UI", 'Roboto', "Helvetica Neue", 'Arial', "Noto Sans", 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Chosen Palette: Corporate Trust Blue (Deep Blue, Slate, Soft Accent Light-Blue) -->
+    <!-- Application Structure Plan: 
+         1. Navigation: Perfectly replicates image_89b773.png with KICPA Logo image (Logo.png), center-aligned 'Vocational High School Group Promo' pill, and right-aligned navigation links.
+         2. Hero Section: Exact copy of image_89b773.png layout, utilizing spacious typography, balanced subtitle margins, and a beautiful rounded-full CTA button as shown in image_cdcf6d.png.
+         3. Section 1 (Benefits & Cost-Saving): Includes interactive Chart.js bar graph comparing standard vs group discount and an interactive instant savings calculator. Includes physical support descriptions (Webcam, stand, screen) alongside critical 1-on-1 private room examination guidelines.
+         4. Section 2 (Exam Hierarchy & Standard): Details FAT/TAT levels, descriptions, and the official definition from image_7c1bd6.png.
+         5. Section 3 (Government Incentives & Credits): Highlights the four major official perks (NEIS codes, Army service points, credits, employment portal).
+         6. Section 4 (Interactive Timeline Process): Explains the 5-step registration process via dynamic click triggers.
+         7. Section 5 (Footer & Contact): Centralizes KICPA contact info.
+    -->
+    <!-- Visualization & Content Choices: 
+         - Logo Design -> Uses Logo.png -> Clean rendering with subtext layout -> Exactly matches KICPA branding.
+         - Fee Comparison -> Chart.js Bar Chart -> Visualizes 39,000 KRW to 30,000 KRW decline -> Instant value comprehension.
+         - Instant Calculator -> Vanilla JS event handling -> Calculates exact school savings based on student input -> Direct call-to-action incentive.
+         - Process Flow -> Interactive Vertical Tab Menu -> Step-by-step guidance -> Prevents visual clutter.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 250px;
+            max-height: 300px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        html { scroll-behavior: smooth; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .step-btn.active {
+            background-color: #1d4ed8 !important;
+            color: white !important;
+            border-color: #1d4ed8 !important;
+        }
+        .step-btn.active:hover {
+            background-color: #ffffff !important;
+            color: #1d4ed8 !important;
+            border-color: #1d4ed8 !important;
+        }
+        .step-btn.active .step-number {
+            background-color: #ffffff !important;
+            color: #1d4ed8 !important;
+        }
+        .step-btn.active:hover .step-number {
+            background-color: #dbeafe !important;
+            color: #1d4ed8 !important;
+        }
+        .step-btn.active .step-arrow {
+            color: #ffffff !important;
+        }
+        .step-btn.active:hover .step-arrow {
+            color: #1d4ed8 !important;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased leading-relaxed">
+
+    <!-- Navigation (Replicated from image_89b773.png with Logo.png - Scaled fonts for readability) -->
+    <nav class="fixed w-full bg-white border-b border-slate-100 shadow-sm z-50 top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Left: Logo & Title Brand -->
+                <div class="flex items-center space-x-4">
+                    <div class="flex flex-col justify-center">
+                        <img src="Logo.png" alt="KICPA 로고" class="h-5 sm:h-6 w-auto object-contain">
+                    </div>
+                    <div class="h-8 w-[1.5px] bg-slate-300"></div>
+                    <div class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight flex items-center">
+                        <span>국가공인</span>
+                        <span class="text-red-600 ml-2 mr-1">AT</span>
+                        <span>자격시험</span>
+                    </div>
+                </div>
+
+                <!-- Center: Pill Badge -->
+                <div class="hidden xl:flex items-center justify-center">
+                    <div class="py-1.5 px-5 rounded-full bg-blue-50 text-blue-700 text-base font-bold border border-blue-100 shadow-sm">
+                        직업계고 대상 단체접수 프로모션
+                    </div>
+                </div>
+
+                <!-- Right: Navigation Links (Increased text size to text-base) -->
+                <div class="hidden md:flex space-x-6 lg:space-x-8">
+                    <a href="#benefits" class="text-slate-700 hover:text-blue-700 text-base font-bold transition">특별 혜택</a>
+                    <a href="#overview" class="text-slate-700 hover:text-blue-700 text-base font-bold transition">시험 개요 & 구조</a>
+                    <a href="#official-incentives" class="text-slate-700 hover:text-blue-700 text-base font-bold transition">취득자 우대혜택</a>
+                    <a href="#process" class="text-slate-700 hover:text-blue-700 text-base font-bold transition">신청 절차</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-28 pb-16">
+        
+        <!-- Hero Section (Exactly Styled from image_89b773.png & image_cdcf6d.png) -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 mb-20 text-center">
+            <!-- Mobile and Tablet Pill Badge representation -->
+            <div class="inline-block lg:hidden py-1.5 px-4 rounded-full bg-blue-50 text-blue-700 text-sm font-bold border border-blue-100 shadow-sm mb-6">
+                직업계고 대상 단체접수 프로모션
+            </div>
+            
+            <h1 class="text-3xl sm:text-4xl md:text-[46px] font-extrabold text-slate-900 mb-8 tracking-tight !leading-[1.4] break-keep max-w-5xl mx-auto">
+                기업이 먼저 찾는 실무형 인재의 기준,<br>
+                <span class="text-blue-600">국가공인 AT 자격시험으로 취업의 문을 열어보세요!</span>
+            </h1>
+            
+            <p class="text-slate-600 text-base sm:text-lg md:text-[20px] max-w-4xl mx-auto mb-12 leading-relaxed break-keep font-medium">
+                AT 자격시험은 한국공인회계사회(KICPA)가 주관하는 국가공인 자격시험으로, 실무 중심의 ERP 및 회계·세무 역량을 검증합니다. 직업계고 학생들의 취업 역량 강화를 위한 특별 혜택을 확인해보세요.
+            </p>
+            
+            <!-- Restored & Enhanced CTA Button (Perfectly matching image_cdcf6d.png) -->
+            <div class="flex justify-center">
+                <a href="#benefits" class="inline-flex items-center justify-center px-12 py-4 text-lg sm:text-xl font-extrabold rounded-full text-white bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-xl transition transform hover:-translate-y-0.5 tracking-wider gap-2">
+                    <span>특별 혜택 확인하기</span>
+                    <span class="text-xl">↓</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Section 1: Benefits -->
+        <section id="benefits" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-24 scroll-mt-24">
+            <!-- Introductory Paragraph -->
+            <div class="mb-12">
+                <h2 class="text-3xl font-extrabold text-slate-900 mb-5 border-b-4 border-blue-500 inline-block pb-2">1. 직업계고 학생 특별 혜택</h2>
+                <p class="text-slate-700 text-lg leading-relaxed break-keep">
+                    한국공인회계사회는 직업계고 학생들의 자격 취득을 장려하기 위해 단체접수 시 응시료 감면 혜택과 비대면 시험을 위한 무상 대여를 지원합니다.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Benefit 01: Discount & Chart -->
+                <div class="bg-white rounded-2xl shadow-md p-8 sm:p-10 border border-slate-100 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-red-500 text-white font-extrabold px-5 py-2 rounded-bl-xl text-sm tracking-wider shadow-sm">
+                        23% OFF
+                    </div>
+                    <h3 class="text-2xl font-extrabold text-slate-850 mb-3 flex items-center gap-2">
+                        <span class="text-2xl">💰</span> 혜택 01 | 응시료 특별 할인
+                    </h3>
+                    <p class="text-slate-700 text-base md:text-lg mb-8 leading-relaxed">직업계고 학생들의 경제적 부담 완화를 위해 1인당 9,000원을 감면해 드립니다. (급수 무관)</p>
+                    
+                    <!-- Chart Container -->
+                    <div class="chart-container mb-8">
+                        <canvas id="discountChart"></canvas>
+                    </div>
+
+                    <!-- Interactive Calculator -->
+                    <div class="bg-slate-50 p-6 sm:p-8 rounded-2xl border border-slate-200">
+                        <label for="studentCount" class="block text-base sm:text-lg font-bold text-slate-800 mb-3 break-keep">우리 학교 단체접수 예상 인원을 입력 후 '계산하기' 버튼을 눌러보세요. (단체접수: 5명 이상)</label>
+                        <div class="flex gap-3 items-center">
+                            <input type="number" id="studentCount" min="1" value="5" class="w-28 text-lg font-bold border-slate-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 p-3 border text-center">
+                            <span class="text-slate-800 font-bold text-lg">명</span>
+                            <button id="calcBtn" class="ml-auto bg-slate-800 hover:bg-slate-700 text-white px-6 py-3.5 rounded-lg text-base font-bold transition">계산하기</button>
+                        </div>
+                        <div id="calcResult" class="mt-5 text-center p-4 bg-blue-50 rounded-lg text-blue-800 font-bold border border-blue-100 text-lg"></div>
+                    </div>
+                </div>
+
+                <!-- Benefit 02: Infrastructure Support -->
+                <div class="bg-white rounded-2xl shadow-md p-8 sm:p-10 border border-slate-100">
+                    <h3 class="text-2xl font-extrabold text-slate-850 mb-3 flex items-center gap-2">
+                        <span class="text-3xl">🖥️</span> 혜택 02 | 비대면 응시 인프라 무상 지원
+                    </h3>
+                    <p class="text-slate-700 text-base md:text-lg mb-8 leading-relaxed break-keep">개별 응시 환경 조성이 어려운 학생들을 위해 시험에 필요한 필수 기자재를 지원합니다. </p>
+
+                    <div class="space-y-5">
+                        <div class="flex items-start gap-5 p-5 rounded-2xl bg-slate-50 border border-slate-100 hover:bg-slate-100 transition cursor-default group">
+                            <div class="text-4xl group-hover:scale-110 transition transform origin-center">📷</div>
+                            <div>
+                                <h4 class="font-extrabold text-slate-900 text-lg">전면 웹캠 (Webcam)</h4>
+                                <p class="text-base text-slate-700 mt-1 leading-relaxed">비대면 시험 감독을 위한 PC 연결용 웹캠</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-5 p-5 rounded-2xl bg-slate-50 border border-slate-100 hover:bg-slate-100 transition cursor-default group">
+                            <div class="text-4xl group-hover:scale-110 transition transform origin-center">📱</div>
+                            <div>
+                                <h4 class="font-extrabold text-slate-900 text-lg">휴대폰 거치대</h4>
+                                <p class="text-base text-slate-700 mt-1 leading-relaxed">측면 및 주변 환경 감독용 스마트폰 거치용 삼각대</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-5 p-5 rounded-2xl bg-slate-50 border border-slate-100 hover:bg-slate-100 transition cursor-default group">
+                            <div class="text-4xl group-hover:scale-110 transition transform origin-center">⛺</div>
+                            <div>
+                                <h4 class="font-extrabold text-slate-900 text-lg">배경 차단 가림막 (스크린)</h4>
+                                <p class="text-base text-slate-700 mt-1 leading-relaxed">비대면 시험 규정에 명시된 독립된 응시 환경 조성을 위한 대형 가림막 천 및 프레임 세트</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Regulatory Notice for Academic Testing Venues -->
+                    <div class="mt-8 p-6 bg-yellow-50 text-yellow-900 rounded-2xl border border-yellow-200 shadow-sm">
+                        <h4 class="font-extrabold text-yellow-900 mb-3 flex items-center gap-2 text-base sm:text-lg">
+                            <span>💡</span> [필독] 응시 환경 조성 주의사항
+                        </h4>
+                        <ul class="list-disc pl-5 space-y-2.5 text-sm sm:text-base text-slate-800 leading-relaxed font-medium">
+                            <li>본 자격시험은 원격 화상 감독으로 진행되므로, 규정에 따라 응시자 외의 타인이나 주변 환경이 감독 카메라에 노출되지 않는 독립된 공간 확보가 필수입니다.</li>
+                            <li>학교 단위 일괄 신청을 권장하며, 시험 전 안내된 일정에 진행되는 사전테스트를 통해 규정 부합 여부를 반드시 확인해야 합니다.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Exam Overview -->
+        <section id="overview" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-20 scroll-mt-24">
+            <div class="bg-slate-900 rounded-3xl shadow-xl overflow-hidden text-white">
+                <div class="p-8 md:p-12 lg:px-16">
+                    <!-- Introductory Paragraph -->
+                    <h2 class="text-3xl font-extrabold mb-5 border-b border-slate-700 pb-4">2. 국가공인 AT 자격시험 개요 및 등급 기준</h2>
+                    <p class="text-slate-200 mb-10 text-base md:text-lg leading-relaxed break-keep font-medium">
+                        AT 자격시험은 FAT와 TAT 등급으로 체계적으로 양분되어, 세무 지식뿐만 아니라 실무 ERP 숙련도까지 포괄적으로 검증합니다. 
+                    </p>
+                    
+                    <!-- Official AT Introduction Card (Reflecting image_7c1bd6.png) -->
+                    <div class="mb-12 bg-slate-800/40 p-6 md:p-8 rounded-2xl border border-slate-700">
+                        <h3 class="text-2xl font-extrabold text-blue-400 mb-4 flex items-center gap-2">
+                            <span>📢</span> AT(Accounting Technician)란?
+                        </h3>
+                        <p class="text-slate-100 text-lg md:text-xl leading-relaxed break-keep font-medium">
+                            우리나라 최고의 회계·세무 전문가 단체인 <span class="text-white font-bold underline decoration-blue-500 decoration-2">한국공인회계사회</span>에서 주관하는 국가공인 “회계·세무 실무자격”으로 기업에서 사용하는 회계·세무 실무프로그램의 <span class="text-blue-300 font-bold">회계 및 세무 처리 능력을 인증</span>하는 회계·세무 실무자격입니다.
+                        </p>
+                    </div>
+
+                    <!-- AT Qualification Structure and Exam Standards -->
+                    <div class="mb-12">
+                        <h3 class="text-2xl font-extrabold text-white mb-6 flex items-center gap-2">
+                            <span>📊</span> AT 자격 구성 및 등급별 검정기준
+                        </h3>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <!-- FAT Card -->
+                            <div class="bg-slate-800/60 p-6 sm:p-8 rounded-2xl border border-blue-900/40 flex flex-col">
+                                <div class="flex justify-between items-center mb-5">
+                                    <span class="text-3xl font-extrabold text-blue-400 tracking-tight">FAT</span>
+                                    <span class="px-4 py-1 bg-blue-900/50 text-blue-300 text-xs sm:text-sm font-bold rounded-full border border-blue-700/50">Financial Accounting Technician</span>
+                                </div>
+                                <h4 class="font-extrabold text-xl text-slate-100 mb-4 border-b border-slate-700/50 pb-2">회계정보의 활용능력 검정</h4>
+                                <ul class="space-y-5 text-base text-slate-200">
+                                    <li class="leading-relaxed">
+                                        <strong class="text-white flex items-center gap-2 mb-1.5 text-lg">
+                                            <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> 1급
+                                        </strong>
+                                        재무회계의 기본 과정을 이해하고 전자세금계산서관리 및 부가가치세 신고를 수행할 수 있으며, 기업에서 발생하는 재고관리 및 매출원가정보 관리 능력을 평가
+                                    </li>
+                                    <li class="leading-relaxed">
+                                        <strong class="text-white flex items-center gap-2 mb-1.5 text-lg">
+                                            <span class="w-2.5 h-2.5 rounded-full bg-blue-400"></span> 2급
+                                        </strong>
+                                        회계기본 순환 과정을 이해하고 증빙관리 및 상거래 활동에서 발생하는 회계정보의 활용 능력을 평가
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- TAT Card -->
+                            <div class="bg-slate-800/60 p-6 sm:p-8 rounded-2xl border border-emerald-900/40 flex flex-col">
+                                <div class="flex justify-between items-center mb-5">
+                                    <span class="text-3xl font-extrabold text-emerald-400 tracking-tight">TAT</span>
+                                    <span class="px-4 py-1 bg-emerald-900/50 text-emerald-300 text-xs sm:text-sm font-bold rounded-full border border-emerald-700/50">Tax Accounting Technician</span>
+                                </div>
+                                <h4 class="font-extrabold text-xl text-slate-100 mb-4 border-b border-slate-700/50 pb-2">세무정보 분석 및 처리능력 검정</h4>
+                                <ul class="space-y-5 text-base text-slate-200">
+                                    <li class="leading-relaxed">
+                                        <strong class="text-white flex items-center gap-2 mb-1.5 text-lg">
+                                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> 1급
+                                        </strong>
+                                        재무회계와 업종별 세무정보관리의 수행 능력을 종합적으로 평가
+                                    </li>
+                                    <li class="leading-relaxed">
+                                        <strong class="text-white flex items-center gap-2 mb-1.5 text-lg">
+                                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span> 2급
+                                        </strong>
+                                        재무회계와 부가가치세 부속 서류작성 수행능력 및 소득세 원천징수와 연말정산등의 세무정보 분석 능력을 평가
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="bg-slate-800/50 p-6 rounded-2xl border border-slate-700 backdrop-blur-sm">
+                            <div class="text-3xl mb-3">🏷️</div>
+                            <h4 class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">자격 명칭</h4>
+                            <p class="font-bold text-lg">국가공인 AT 자격시험<br><span class="text-sm font-normal text-slate-300">(FAT 1·2급, TAT 1·2급)</span></p>
+                        </div>
+                        <div class="bg-slate-800/50 p-6 rounded-2xl border border-slate-700 backdrop-blur-sm">
+                            <div class="text-3xl mb-3">🏛️</div>
+                            <h4 class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">주관 기관</h4>
+                            <p class="font-bold text-lg">한국공인회계사회<br><span class="text-sm font-normal text-slate-300">(KICPA)</span></p>
+                        </div>
+                        <div class="bg-slate-800/50 p-6 rounded-2xl border border-slate-700 backdrop-blur-sm md:col-span-2">
+                            <div class="text-3xl mb-3">🎯</div>
+                            <h4 class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">검증 내용</h4>
+                            <p class="font-semibold text-slate-200 text-base  break-keep">기업 실무에서 사용되는 회계·세무 표준 소프트웨어를 활용하여 <span class="text-white font-bold bg-blue-900/50 px-1.5 py-0.5 rounded">실제 경영 데이터 처리 및 ERP 운용 능력</span>을 평가</p>
+                        </div>
+                        <div class="bg-slate-800/50 p-6 rounded-2xl border border-slate-700 backdrop-blur-sm md:col-span-2 lg:col-span-4">
+                            <div class="text-3xl mb-3">🌐</div>
+                            <h4 class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">시험 방식</h4>
+                            <p class="font-bold text-lg leading-relaxed">비대면 온라인 시험 <br><span class="font-semibold text-slate-300 text-base">(정숙이 유지되는 1인 1실의 독립공간 - 자택, 개인사무실 또는 회의실 등)</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: AT Holder Benefits & Preferential Treatment -->
+        <section id="official-incentives" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-20 scroll-mt-24">
+            <!-- Introductory Paragraph -->
+            <div class="mb-10">
+                <h2 class="text-3xl font-extrabold text-slate-900 mb-4 border-b-4 border-blue-500 inline-block pb-2">3. AT 자격 취득자 지원 및 우대현황</h2>
+                <p class="text-slate-700 text-lg leading-relaxed font-medium">
+                    AT 자격은 교육부 나이스(NEIS) 정식 등재, 학점인정, 국방부 행정병 가산점 취득 등 공인 자격증으로서의 국가적 권위를 모두 갖춘 자격시험입니다.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Benefit 1: NEIS Code -->
+                <div class="bg-white rounded-2xl shadow-md p-6 sm:p-8 border border-slate-100 flex flex-col hover:shadow-lg transition">
+                    <div class="flex items-center gap-4 mb-5">
+                        <span class="text-4xl">🎒</span>
+                        <div>
+                            <h3 class="font-extrabold text-slate-850 text-xl">교육부 NEIS (교육행정정보시스템) 등재</h3>
+                            <p class="text-xs sm:text-sm text-slate-500 font-bold mt-0.5">학교생활기록부 등재 공식 자격 코드 부여</p>
+                        </div>
+                    </div>
+                    <p class="text-base text-slate-750 mb-5 flex-grow leading-relaxed font-medium">
+                        교육부 지침에 따라 AT 자격 취득 시 고등학교 생활기록부에 공식 자격 코드로 등록할 수 있어, 대학 진학 및 고교 취업 스펙으로 증명할 수 있습니다.
+                    </p>
+                    <div class="grid grid-cols-2 gap-3 bg-slate-50 p-4 rounded-xl border border-slate-100 text-sm font-mono font-bold">
+                        <div class="flex justify-between p-1.5 border-b border-slate-200">
+                            <span class="text-slate-600">FAT 1급</span>
+                            <span class="font-extrabold text-blue-700">2016051301</span>
+                        </div>
+                        <div class="flex justify-between p-1.5 border-b border-slate-200">
+                            <span class="text-slate-600">FAT 2급</span>
+                            <span class="font-extrabold text-blue-700">2016051302</span>
+                        </div>
+                        <div class="flex justify-between p-1.5">
+                            <span class="text-slate-600">TAT 1급</span>
+                            <span class="font-extrabold text-emerald-700">2016051303</span>
+                        </div>
+                        <div class="flex justify-between p-1.5">
+                            <span class="text-slate-600">TAT 2급</span>
+                            <span class="font-extrabold text-emerald-700">2016051304</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Benefit 2: Military Points -->
+                <div class="bg-white rounded-2xl shadow-md p-6 sm:p-8 border border-slate-100 flex flex-col hover:shadow-lg transition">
+                    <div class="flex items-center gap-4 mb-5">
+                        <span class="text-4xl">🪖</span>
+                        <div>
+                            <h3 class="font-extrabold text-slate-850 text-xl">육군 기술행정병 지원 가산점</h3>
+                            <p class="text-xs sm:text-sm text-slate-500 font-bold mt-0.5">기술행정병 자격증 부문 우대 가점 적용</p>
+                        </div>
+                    </div>
+                    <p class="text-base text-slate-750 mb-5 flex-grow leading-relaxed font-medium">
+                        육군 기술행정병(재정병 등) 지원 시 공신력을 보유한 자격증으로 인정받아 가산점을 취득할 수 있어 학생들의 전공 복무 기회를 넓힙니다. <br>(TAT 1·2급, FAT 1·2급 공통 적용)
+                    </p>
+                    <div class="flex justify-around bg-blue-50/70 p-4 rounded-xl border border-blue-100 text-center font-bold">
+                        <div>
+                            <div class="text-sm text-slate-600 mb-1">직접 관련 분야</div>
+                            <div class="text-xl font-black text-blue-800">30점 가산</div>
+                        </div>
+                        <div class="border-l border-blue-200 h-12"></div>
+                        <div>
+                            <div class="text-sm text-slate-600 mb-1">간접 관련 분야</div>
+                            <div class="text-xl font-black text-slate-800">25점 가산</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Benefit 3: Academic Credits -->
+                <div class="bg-white rounded-2xl shadow-md p-6 sm:p-8 border border-slate-100 flex flex-col hover:shadow-lg transition">
+                    <div class="flex items-center gap-4 mb-5">
+                        <span class="text-4xl">🎓</span>
+                        <div>
+                            <h3 class="font-extrabold text-slate-850 text-xl">국가평생교육진흥원 학점은행제 학점 인정</h3>
+                            <p class="text-xs sm:text-sm text-slate-500 font-bold mt-0.5">학위 취득을 위한 공식 자격 학점 부여</p>
+                        </div>
+                    </div>
+                    <p class="text-base text-slate-750 mb-5 flex-grow leading-relaxed font-medium">
+                        「학점인정 등에 관한 법률」 제7조에 의거하여 학점인정이 가능하여, 고교 졸업 후 선취업-후진학 제도나 사이버대/학점은행제를 활용하는 학생들의 대학 조기 학위 취득을 지원합니다.
+                    </p>
+                    <div class="flex gap-3 justify-between bg-emerald-50 p-3 rounded-xl border border-emerald-100 text-center text-sm font-bold">
+                        <div class="bg-white p-2 rounded-lg border border-emerald-100/50 flex-1">
+                            <span class="block text-slate-600 text-xs mb-1">TAT 1급</span>
+                            <span class="font-black text-emerald-800 text-lg">16학점</span>
+                        </div>
+                        <div class="bg-white p-2 rounded-lg border border-emerald-100/50 flex-1">
+                            <span class="block text-slate-600 text-xs mb-1">TAT 2급</span>
+                            <span class="font-black text-emerald-800 text-lg">10학점</span>
+                        </div>
+                        <div class="bg-white p-2 rounded-lg border border-emerald-100/50 flex-1">
+                            <span class="block text-slate-600 text-xs mb-1">FAT 1급</span>
+                            <span class="font-black text-emerald-800 text-lg">4학점</span>
+                        </div>
+                    </div>
+                    <p class="text-[11px] font-bold text-slate-500 mt-2 text-center">※ 국가공인 지정(2015.12.1.) 이후 취득한 자격(제15회부터 적용)에 한함</p>
+                </div>
+
+                <!-- Benefit 4: Employment & Award (Re-engineered Layout for Higher Scannability) -->
+                <div class="bg-white rounded-2xl shadow-md p-6 sm:p-8 border border-slate-100 flex flex-col hover:shadow-lg transition">
+                    <div class="flex items-center gap-4 mb-6">
+                        <span class="text-4xl">🏆</span>
+                        <div>
+                            <h3 class="font-extrabold text-slate-850 text-xl">고용노동부 HRD-Net 등재 및 연말 시상</h3>
+                            <p class="text-xs sm:text-sm text-slate-500 font-bold mt-0.5">자격 신뢰성 보장 및 KICPA AT Award</p>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-6 flex-grow flex flex-col justify-center">
+                        <!-- Item 1: HRD-Net Badge & Paragraph -->
+                        <div class="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4 border-b border-slate-100 pb-5">
+                            <span class="inline-flex items-center justify-center bg-slate-100 text-slate-700 text-sm font-bold px-3 py-1.5 rounded-lg shrink-0 w-max">
+                                HRD-Net 등재 완료
+                            </span>
+                            <p class="text-base text-slate-750 leading-relaxed font-medium">
+                                고용노동부 직업능력포털 <strong>「HRD-Net」</strong>에 공식 자격정보가 등재되어 신뢰성이 입증됩니다.
+                            </p>
+                        </div>
+                        
+                        <!-- Item 2: AT Award Badge & Paragraph -->
+                        <div class="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
+                            <span class="inline-flex items-center justify-center bg-blue-100 text-blue-800 text-sm font-bold px-3 py-1.5 rounded-lg shrink-0 w-max">
+                                AT Award 연말 시상
+                            </span>
+                            <p class="text-base text-slate-750 leading-relaxed font-medium">
+                                AT 전용 구인구직 포털을 통해 맞춤형 일자리를 실시간 제공하며, 등급별 성적우수자 대상 <strong>AT Award</strong> 연말 수상을 운영합니다.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Process -->
+        <section id="process" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-20 scroll-mt-24">
+            <!-- Introductory Paragraph -->
+            <div class="mb-10">
+                <h2 class="text-3xl font-extrabold text-slate-900 mb-4 border-b-4 border-blue-500 inline-block pb-2">4. 신청 방법 및 행정 절차</h2>
+                <p class="text-slate-700 text-lg leading-relaxed font-medium">
+                    단체 원서 접수 시 진행하는 5단계 신청 절차입니다. 각 단계별 버튼을 눌러 상세 필요 요건과 첨부 가이드를 직접 확인해 보세요.
+                </p>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-8 items-start">
+                <!-- Stepper Navigation -->
+                <div class="w-full lg:w-1/3 flex flex-col space-y-3" id="stepButtonsContainer">
+                    <!-- Buttons generated by JS -->
+                </div>
+
+                <!-- Step Details Detail View -->
+                <div class="w-full lg:w-2/3 bg-white p-8 sm:p-10 rounded-2xl shadow-lg border border-slate-200 min-h-[300px] flex flex-col justify-center transition-all duration-300 relative overflow-hidden" id="stepDetailBox">
+                    <!-- Decorative background element -->
+                    <div class="absolute -right-10 -top-10 text-[180px] opacity-[0.03] select-none pointer-events-none" id="stepIconBg">📝</div>
+                    
+                    <div class="relative z-10">
+                        <div class="inline-block px-4 py-1.5 bg-blue-100 text-blue-800 font-extrabold rounded-md mb-5 text-sm tracking-widest" id="stepBadge">STEP 1</div>
+                        <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-5" id="stepTitle">명단 취합</h3>
+                        <p class="text-slate-700 text-lg sm:text-xl leading-relaxed mb-8 font-medium" id="stepDesc">내용이 여기에 표시됩니다.</p>
+                        
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-5 mt-auto rounded-r-xl">
+                            <p class="text-base text-yellow-900 font-bold leading-relaxed">
+                                <span class="font-extrabold">⚠️ 주의사항:</span> 각 회차별 원서접수 마감 <span class="font-extrabold text-red-600">3일 전까지</span> 제출 요망
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Contact -->
+        <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center bg-blue-50 rounded-3xl p-10 border border-blue-100">
+            <h2 class="text-3xl font-extrabold text-slate-900 mb-5">도움이 필요하신가요?</h2>
+            <p class="text-slate-700 text-base sm:text-lg mb-8 max-w-2xl mx-auto leading-relaxed">단체접수 특별혜택 관련 상세한 사항은 아래 연락처로 문의해 주시기 바랍니다.</p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8 font-bold">
+                <div class="bg-white p-5 rounded-2xl shadow-sm flex flex-col items-center justify-center border border-slate-100">
+                    <span class="text-3xl mb-2">📞</span>
+                    <span class="text-sm text-slate-500 mb-1">단체접수 전담 연락처</span>
+                    <strong class="text-slate-850 text-xl">02-3149-0236</strong>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm flex flex-col items-center justify-center border border-slate-100">
+                    <span class="text-3xl mb-2">✉️</span>
+                    <span class="text-sm text-slate-500 mb-1">이메일 문의</span>
+                    <strong class="text-slate-850 text-xl">at@kicpa.or.kr</strong>
+                </div>
+                <a href="https://at.kicpa.or.kr" target="_blank" class="bg-white p-5 rounded-2xl shadow-sm flex flex-col items-center justify-center border border-slate-100 hover:border-blue-500 hover:shadow-md transition group cursor-pointer">
+                    <span class="text-3xl mb-2 group-hover:scale-110 transition transform">🌐</span>
+                    <span class="text-sm text-slate-500 mb-1">공식 홈페이지</span>
+                    <strong class="text-blue-600 text-xl group-hover:underline">at.kicpa.or.kr ↗</strong>
+                </a>
+            </div>
+            
+            <div class="flex flex-col justify-center">
+                <img src="new_logo.png" alt="KICPA_AT로고" class="h-10 sm:h-11 w-auto object-contain">
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-10 text-center text-sm sm:text-base">
+        <p>&copy; 2026 KICPA AT 자격시험. 본 안내 페이지는 제공된 문서 정보를 바탕으로 제작되었습니다.</p>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- 1. Chart.js Implementation (Discount Visualization) ---
+            const ctx = document.getElementById('discountChart').getContext('2d');
+            
+            // Chart Data from Report
+            const chartData = {
+                labels: ['정상 응시료', '직업계고 단체 혜택가'],
+                datasets: [{
+                    label: '응시료 (원)',
+                    data: [39000, 30000],
+                    backgroundColor: [
+                        'rgba(148, 163, 184, 0.6)', 
+                        'rgba(29, 78, 216, 0.8)'    
+                    ],
+                    borderColor: [
+                        'rgba(148, 163, 184, 1)',
+                        'rgba(29, 78, 216, 1)'
+                    ],
+                    borderWidth: 1,
+                    borderRadius: 6, 
+                    barPercentage: 0.6
+                }]
+            };
+
+            const chartConfig = {
+                type: 'bar',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false, 
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) { label += ': '; }
+                                    if (context.parsed.y !== null) {
+                                        label += new Intl.NumberFormat('ko-KR').format(context.parsed.y) + '원';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 45000,
+                            ticks: {
+                                callback: function(value) {
+                                    return new Intl.NumberFormat('ko-KR').format(value);
+                                }
+                            },
+                            grid: { color: '#f1f5f9' }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    },
+                    animation: {
+                        duration: 1500,
+                        easing: 'easeOutQuart'
+                    }
+                }
+            };
+
+            const discountChart = new Chart(ctx, chartConfig);
+
+
+            // --- 2. Interactive Calculator Logic ---
+            const studentCountInput = document.getElementById('studentCount');
+            const calcBtn = document.getElementById('calcBtn');
+            const calcResult = document.getElementById('calcResult');
+
+            calcBtn.addEventListener('click', () => {
+                const count = parseInt(studentCountInput.value, 10);
+                
+                if (isNaN(count) || count < 1) {
+                    calcResult.innerHTML = "올바른 인원을 입력해주세요.";
+                    calcResult.className = "mt-4 text-center p-3 bg-red-50 rounded-lg text-red-600 font-bold border border-red-100 block";
+                } else if (count < 5) {
+                    calcResult.innerHTML = "❌ 단체접수는 <strong>5명 이상</strong>부터 할인이 적용됩니다.";
+                    calcResult.className = "mt-4 text-center p-3 bg-red-50 rounded-lg text-red-600 font-bold border border-red-100 block";
+                } else {
+                    const savedPerPerson = 9000;
+                    const totalSaved = count * savedPerPerson;
+                    const formattedSaved = new Intl.NumberFormat('ko-KR').format(totalSaved);
+                    
+                    calcResult.innerHTML = `🎉 총 <strong>${formattedSaved}원</strong>의 응시료를 절감할 수 있습니다! <br><span class="text-sm font-normal">(1인당 9,000원 × ${count}명)</span>`;
+                    calcResult.className = "mt-4 text-center p-3 bg-blue-50 rounded-lg text-blue-800 font-bold border border-blue-100 block animate-pulse";
+                    
+                    setTimeout(() => {
+                        calcResult.classList.remove('animate-pulse');
+                    }, 1000);
+                }
+            });
+
+
+            // --- 3. Interactive Application Process Timeline ---
+            const processSteps = [
+                {
+                    step: 1,
+                    title: "단체회원 가입 및 승인",
+                    desc: "홈페이지 우측 상단 [회원가입]에서 <strong>'단체회원'</strong>으로 가입합니다. 한국공인회계사회 관리자 심사 후 승인 알림 메일이 발송되면 접수 권한이 부여됩니다.",
+                    icon: "👤"
+                },
+                {
+                    step: 2,
+                    title: "접수 메뉴 접속 & 로그인",
+                    desc: "승인된 단체 계정으로 원서접수 기간 내에 로그인합니다. 이후 <strong>[마이페이지] > [나의 수험관리] > [원서접수] </strong> 메뉴를 차례대로 선택하여 세션에 진입합니다.",
+                    icon: "🔑"
+                },
+                {
+                    step: 3,
+                    title: "엑셀 일괄 등록 및 검사",
+                    desc: "단체접수 엑셀 템플릿에 학생 정보(이름, 가입 ID, 등급)를 정확히 기입하여 업로드합니다. 정보가 일치하지 않거나 중복 접수된 명단은 자동 제외됩니다.<br><span class='text-sm text-red-600 font-bold mt-2 inline-block'>※ 학생들의 미리 개별 회원가입 완료 필수</span>",
+                    icon: "📊"
+                },
+                {
+                    step: 4,
+                    title: "온라인 고사장 및 규정 동의",
+                    desc: "고사장 유형을 <strong>[온라인 고사장]</strong>으로 지정하고 비대면 감독을 위한 전자기기 성능 테스트 및 <strong>'정숙한 1인 1실 격리 환경 응시'</strong> 서약에 체크 동의합니다.",
+                    icon: "🎯"
+                },
+                {
+                    step: 5,
+                    title: "응시료 결제 및 접수 완료",
+                    desc: "응시 등급별 총결제 금액을 최종 확인한 후, <strong>신용카드, 계좌이체, 무통장입금</strong> 중 선택하여 결제합니다. 결제 직후 <strong>접수증을 일괄 출력</strong>하여 인쇄할 수 있습니다.",
+                    icon: "💳"
+                }
+            ];
+
+            const btnContainer = document.getElementById('stepButtonsContainer');
+            const stepBadge = document.getElementById('stepBadge');
+            const stepTitle = document.getElementById('stepTitle');
+            const stepDesc = document.getElementById('stepDesc');
+            const stepIconBg = document.getElementById('stepIconBg');
+
+            processSteps.forEach((stepData, index) => {
+                const btn = document.createElement('button');
+                btn.className = `step-btn w-full text-left px-5 py-4 rounded-xl border border-slate-200 bg-white font-bold text-slate-700 hover:bg-slate-50 transition flex items-center justify-between group text-lg`;
+                btn.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="step-number flex items-center justify-center w-9 h-9 rounded-full bg-slate-100 text-slate-500 group-hover:bg-blue-100 group-hover:text-blue-700 transition font-black text-base">${stepData.step}</span>
+                        <span>${stepData.title}</span>
+                    </div>
+                    <span class="step-arrow text-slate-300 group-hover:text-blue-300 transition text-xl">→</span>
+                `;
+                
+                btn.addEventListener('click', () => updateStepView(index));
+                btnContainer.appendChild(btn);
+            });
+
+            function updateStepView(index) {
+                const buttons = document.querySelectorAll('.step-btn');
+                
+                buttons.forEach((b, i) => {
+                    if (i === index) {
+                        b.classList.add('active', 'shadow-md');
+                        b.classList.remove('bg-white', 'text-slate-700', 'border-slate-200');
+                    } else {
+                        b.classList.remove('active', 'shadow-md');
+                        b.classList.add('bg-white', 'text-slate-700', 'border-slate-200');
+                    }
+                });
+
+                const detailBox = document.getElementById('stepDetailBox');
+                detailBox.style.opacity = '0';
+                
+                setTimeout(() => {
+                    const data = processSteps[index];
+                    stepBadge.textContent = `STEP ${data.step}`;
+                    stepTitle.textContent = data.title;
+                    stepDesc.innerHTML = data.desc;
+                    stepIconBg.textContent = data.icon;
+                    detailBox.style.opacity = '1';
+                }, 150); 
+            }
+
+            updateStepView(0);
+        });
+    </script>
+</body>
+</html>
