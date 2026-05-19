@@ -175,15 +175,17 @@
                         <canvas id="discountChart"></canvas>
                     </div>
 
-                    <!-- Interactive Calculator -->
-                    <div class="bg-slate-50 p-6 sm:p-8 rounded-2xl border border-slate-200">
-                        <label for="studentCount" class="block text-base sm:text-lg font-bold text-slate-800 mb-3 break-keep">우리 학교 단체접수 예상 인원을 입력 후 '계산하기' 버튼을 눌러보세요. (단체접수: 5명 이상)</label>
-                        <div class="flex gap-3 items-center">
-                            <input type="number" id="studentCount" min="1" value="5" class="w-28 text-lg font-bold border-slate-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 p-3 border text-center">
-                            <span class="text-slate-800 font-bold text-lg">명</span>
-                            <button id="calcBtn" class="ml-auto bg-slate-800 hover:bg-slate-700 text-white px-6 py-3.5 rounded-lg text-base font-bold transition">계산하기</button>
+                    <!-- Compact Interactive Calculator -->
+                    <div class="bg-slate-50 p-3.5 sm:p-4 rounded-xl border border-slate-200 mt-3">
+                        <label for="studentCount" class="block text-sm sm:text-base font-bold text-slate-800 mb-1.5 break-keep">우리 학교 단체접수 예상 인원을 입력해 보세요. (5명 이상)</label>
+                        <div class="flex gap-2 items-center">
+                            <input type="number" id="studentCount" min="1" value="5" class="w-16 sm:w-20 text-sm sm:text-base font-bold border-slate-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 p-1.5 sm:p-2 border text-center">
+                            <span class="text-slate-800 font-bold text-sm sm:text-base">명</span>
+                            <button id="calcBtn" class="ml-auto bg-slate-800 hover:bg-slate-700 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-bold transition">계산하기</button>
                         </div>
-                        <div id="calcResult" class="mt-5 text-center p-4 bg-blue-50 rounded-lg text-blue-800 font-bold border border-blue-100 text-lg"></div>
+                        <div id="calcResult" class="mt-2 text-center p-2.5 bg-blue-50 rounded-lg text-blue-800 font-bold border border-blue-100 text-xs sm:text-sm min-h-[36px] flex items-center justify-center">
+                            인원을 입력하시면 예상 절감액이 표시됩니다.
+                        </div>
                     </div>
                 </div>
 
@@ -209,14 +211,6 @@
                                 <p class="text-base text-slate-700 mt-1 leading-relaxed">측면 및 주변 환경 감독용 스마트폰 거치용 삼각대</p>
                             </div>
                         </div>
-                        <div class="flex items-start gap-5 p-5 rounded-2xl bg-slate-50 border border-slate-100 hover:bg-slate-100 transition cursor-default group">
-                            <div class="text-4xl group-hover:scale-110 transition transform origin-center">⛺</div>
-                            <div>
-                                <h4 class="font-extrabold text-slate-900 text-lg">배경 차단 가림막 (스크린)</h4>
-                                <p class="text-base text-slate-700 mt-1 leading-relaxed">비대면 시험 규정에 명시된 독립된 응시 환경 조성을 위한 대형 가림막 천 및 프레임 세트</p>
-                            </div>
-                        </div>
-                    </div>
 
                     <!-- Regulatory Notice for Academic Testing Venues -->
                     <div class="mt-8 p-6 bg-yellow-50 text-yellow-900 rounded-2xl border border-yellow-200 shadow-sm">
